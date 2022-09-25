@@ -37,10 +37,6 @@ const rootFolder = path.basename(path.resolve());
 const rename = require('gulp-rename')
 
 
-// List of JS pages !!!!!!!!!!!!!
-
-const pages = ['index', 'about'];
-
 
 // paths
 const srcFolder = './src';
@@ -49,14 +45,14 @@ const paths = {
   srcSvg: `${srcFolder}/img/svg/**.svg`,
   srcImgFolder: `${srcFolder}/img`,
   buildImgFolder: `${buildFolder}/img`,
-  srcScss: [`!${srcFolder}/pages/**/screens/*.scss`, `${srcFolder}/pages/**/*.scss`],
+  srcScss: `${srcFolder}/index.scss`,
   buildCssFolder: `${buildFolder}/css`,
   srcFullJs: [`${srcFolder}/pages/**/*.js`, `${srcFolder}/components/**/*.js`],
-  srcMainJs: [`!${srcFolder}/pages/**/screens/*.js`, `${srcFolder}/pages/**/*.js`],
+  srcMainJs: `${srcFolder}/index.js`,
   buildJsFolder: `${buildFolder}/js`,
   srcPartialsFolder: [`${srcFolder}/pages/**/screens/*.html`, `${srcFolder}/components/**/*.html`],
   resourcesFolder: `${srcFolder}/resources`,
-  htmlFiles: [`!${srcFolder}/pages/**/screens/*.html`, `${srcFolder}/pages/**/*.html`],
+  htmlFiles: `${srcFolder}/*.html`
 
 };
 
@@ -67,18 +63,7 @@ const paths = {
 
 //  pages path generator
 
-const pagesObj = {};
-for (page in pages) {
-  pagesObj[pages[page]] = `${srcFolder}/pages/${pages[page]}/${pages[page]}.js`
-}
-const pagesHtml = []
-for (page in pages) {
-  pagesHtml[page] = `${srcFolder}/pages/${pages[page]}/${pages[page]}.html`
-}
-const pagesScss = []
-for (page in pages) {
-  pagesScss[page] = `${srcFolder}/pages/${pages[page]}/${pages[page]}.scss`
-}
+
 
 
 let isProd = false; // dev by default
@@ -122,7 +107,7 @@ const svgSprites = () => {
 
 // scss styles
 const styles = () => {
-  return src(pagesScss, { sourcemaps: !isProd })
+  return src(paths.srcScss, { sourcemaps: !isProd })
     .pipe(plumber(
       notify.onError({
         title: "SCSS",
@@ -145,7 +130,7 @@ const styles = () => {
 
 // styles backend
 const stylesBackend = () => {
-  return src(pagesScss)
+  return src(paths.srcScss)
     .pipe(plumber(
       notify.onError({
         title: "SCSS",
@@ -174,9 +159,9 @@ const scripts = () => {
     ))
     .pipe(webpackStream({
       mode: isProd ? 'production' : 'development',
-      entry: pagesObj,
+
       output: {
-        filename: '[name]/[name].js',
+        filename: 'index.js',
       },
       module: {
         rules: [{
@@ -200,7 +185,7 @@ const scripts = () => {
       console.error('WEBPACK ERROR', err);
       this.emit('end');
     })
-    .pipe(rename({ dirname: '' }))
+
     .pipe(dest(paths.buildJsFolder))
     .pipe(browserSync.stream());
 }
@@ -216,9 +201,9 @@ const scriptsBackend = () => {
     ))
     .pipe(webpackStream({
       mode: 'development',
-      entry: pagesObj,
+
       output: {
-        filename: '[name]/[name].js',
+        filename: 'index.js',
       },
       module: {
         rules: [{
@@ -242,7 +227,7 @@ const scriptsBackend = () => {
       console.error('WEBPACK ERROR', err);
       this.emit('end');
     })
-    .pipe(rename({ dirname: '' }))
+
     .pipe(dest(paths.buildJsFolder))
     .pipe(browserSync.stream());
 }
@@ -279,7 +264,7 @@ const avifImages = () => {
 };
 
 const htmlInclude = () => {
-  return src(pagesHtml)
+  return src(paths.htmlFiles)
 
     .pipe(fileInclude({
       prefix: '@',
@@ -288,7 +273,7 @@ const htmlInclude = () => {
     // .pipe(typograf({
     //   locale: ['ru', 'en-US']
     // }))
-    .pipe(rename({ dirname: '' }))
+
     .pipe(dest(buildFolder),)
     .pipe(browserSync.stream());
 }
@@ -322,7 +307,7 @@ const cache = () => {
 };
 
 const rewrite = () => {
-  const manifest = readFileSync('app/rev.json');
+  const manifest = readFileSync('build/rev.json');
   src(`${paths.buildCssFolder}/*.css`)
     .pipe(revRewrite({
       manifest

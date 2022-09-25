@@ -1,11 +1,11 @@
 ///// ***** Basic Plug-ins *****
 
 //Variables
-import '../../variables/var'
+import './variables/var'
 //Vendors
-import '../../vendors/focus-visible'
+import './vendors/focus-visible'
 // Common Scripts
-import '../../components/_scripts/common.js'
+import './components/_scripts/common.js'
 
 
 
