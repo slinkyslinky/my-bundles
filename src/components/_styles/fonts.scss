@@ -1,0 +1,42 @@
+@use '../../variables/color.scss' as *;
+@use './mixins/font-face.scss' as *;
+
+///// ***** Fonts *****
+
+@include font-face("Muller", "../../resources/fonts/MullerRegular.woff2", 400, normal);
+
+///// ***** Font adaptation *****
+
+// Vars
+$min-font-size: 16;
+$max-font-size: 24;
+$min-screen-size: 320;
+$max-screen-size: 1920;
+
+// Calculation
+$font-size: calc(($min-font-size * 1px) + ($max-font-size - $min-font-size) * (100vw - $min-screen-size * 1px) / ($max-screen-size - $min-screen-size));
+
+body {
+  font-size: $font-size;
+  color: $font-color;
+}
+
+h1 {
+  font-size: 5rem;
+}
+
+h2 {
+  font-size: 4rem;
+}
+
+h3 {
+  font-size: 3rem;
+}
+
+h4 {
+  font-size: 2rem;
+}
+
+h5 {
+  font-size: 1.5rem;
+}

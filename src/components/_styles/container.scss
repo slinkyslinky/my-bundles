@@ -1,0 +1,24 @@
+// Vars
+
+$container-width: 1280px;
+$container-wide-width: 1480px;
+$container-slim-width: 1000px;
+$container-sides-padding: 40px;
+$container-top-padding: 100px;
+$container-bottom-padding: 50px;
+
+// Containers
+.container {
+  max-width: $container-width;
+  width: 100%;
+  margin: 0 auto;
+  padding: $container-top-padding $container-sides-padding $container-bottom-padding;
+}
+
+.container--wide {
+  max-width: $container-wide-width;
+}
+
+.container-slim {
+  max-width: $container-slim-width;
+}
