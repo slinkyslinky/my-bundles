@@ -322,7 +322,7 @@ const cache = () => {
 };
 
 const rewrite = () => {
-  const manifest = readFileSync('app/rev.json');
+  const manifest = readFileSync('build/rev.json');
   src(`${paths.buildCssFolder}/*.css`)
     .pipe(revRewrite({
       manifest
