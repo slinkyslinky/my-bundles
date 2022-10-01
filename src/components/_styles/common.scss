@@ -1,3 +1,7 @@
+// Vendors
+@use './vendors/normalize.scss';
+
+
 // Mixins
 
 
@@ -6,5 +10,5 @@
 @use '../../variables/color.scss' as *;
 
 // Components
-@use 'container.scss' as *;
-@use 'fonts.scss' as *;
+@use 'container.scss';
+@use 'fonts.scss';

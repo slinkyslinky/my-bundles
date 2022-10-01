@@ -4,7 +4,7 @@ const {
   series,
   watch
 } = require('gulp');
-const autoprefixer = require('gulp-autoprefixer');
+const autoprefixer = require('gulp-autoprefixer'); // Prefixis for css
 const cleanCSS = require('gulp-clean-css');
 const del = require('del');
 const browserSync = require('browser-sync').create();
